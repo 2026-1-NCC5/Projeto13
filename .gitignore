@@ -19,6 +19,9 @@ mono_crash.*
 # Python environment variables
 .env
 
+#Android Studio
+local.properties
+
 # Python virtual environment
 .venv/
 .idea/
