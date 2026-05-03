@@ -56,12 +56,12 @@ def enviar(dadosenviar):
     else:
         st.error("Erro ao enviar dados.\n" + response.text)
 
-
+url = buscarURL()+"/uploads/modelo/best.pt"
 # 2. Carrega o modelo
 @st.cache_resource
 def load_model():
     return YOLO(
-        buscarURL()+"/modelo/best.pt")
+        "./best.pt")
 
 
 modelo = load_model()

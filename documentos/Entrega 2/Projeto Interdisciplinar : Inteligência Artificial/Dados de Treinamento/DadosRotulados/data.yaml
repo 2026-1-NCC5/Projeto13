@@ -1,0 +1,12 @@
+Train: Train.txt
+Validation: Validation.txt
+names:
+  0: Pacote de Arroz
+  1: Acucar
+  2: Cafe
+  3: Feijao Carioca
+  4: Fuba
+  5: Macarrao
+  6: Oleo de Soja
+  7: Macarrao Espaguete
+path: .
