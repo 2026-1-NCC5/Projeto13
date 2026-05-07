@@ -5,8 +5,6 @@ from streamlit_cookies_manager import EncryptedCookieManager
 
 from Variaveis.Variaveis import buscarURL, buscarChave
 
-# Adicionar sistema de filtragem na página principal, capacidade de modificar valores na tabela do grupo e atualizar no banco de dados
-
 # ------------------ CONFIG ------------------
 st.set_page_config(page_title="Lideranças Empáticas", layout="wide")
 
@@ -65,7 +63,7 @@ def GrupoCard(grupo, integrantes):
         with col2:
             st.metric(
                 label="Total arrecadado",
-                value=f"{grupo['kgArrecadados']} kg"
+                value=f"{grupo['kgArrecadados']:.2f} kg"
             )
 
             if grupo["kgArrecadados"] > 100:
@@ -77,7 +75,7 @@ def GrupoCard(grupo, integrantes):
                 st.session_state.grupo = grupo
                 st.session_state.integrantes = integrantes
                 # Adicione esta linha para navegar para a nova página
-                st.switch_page("pages/1_Detalhes_do_Grupo.py")
+                st.switch_page("./pages/1_Detalhes_do_Grupo.py")
         with st.expander("Visualizar integrantes do grupo"):
             for integrante in integrantes:
                 st.markdown(f"- {integrante['nome']}")

@@ -15,6 +15,18 @@ if cookies.get("nome"):
 
 apiURL = buscarURL()
 
+# ------------------ HEADER ------------------
+col1, col2 = st.columns([1, 4])
+
+with col1:
+    st.image("./assets/liderancas_logo.avif", width=120)
+
+with col2:
+    st.title("Lideranças Empáticas")
+    st.caption("Gestão de grupos e arrecadações")
+
+st.divider()
+
 st.title("Login")
 opcao = st.radio("Selecione uma opção", ["Login", "Cadastro"])
 

@@ -15,6 +15,18 @@ apiURL = buscarURL()
 if not cookies.ready():
     st.stop()
 
+# ------------------ HEADER ------------------
+col1, col2 = st.columns([1, 4])
+
+with col1:
+    st.image("./assets/liderancas_logo.avif", width=120)
+
+with col2:
+    st.title("Lideranças Empáticas")
+    st.caption("Gestão de grupos e arrecadações")
+
+st.divider()
+
 if not cookies.get("nome"):
     st.error("🔒 Área exclusiva para usuários logados.")
     st.stop()

@@ -14,15 +14,27 @@ apiURL = buscarURL()
 if "grupo" not in st.session_state or "integrantes" not in st.session_state:
     st.warning("Nenhum grupo selecionado. Por favor, volte ao Dashboard e selecione um grupo.")
     if st.button("Voltar ao Dashboard"):
-        st.switch_page("Dashboard.py")
+        st.switch_page("./pages/Dashboard.py")
     st.stop()
 
 grupo = st.session_state.grupo
 integrantes = st.session_state.integrantes
 
+# ------------------ HEADER ------------------
+col1, col2 = st.columns([1, 4])
+
+with col1:
+    st.image("./assets/liderancas_logo.avif", width=120)
+
+with col2:
+    st.title("Lideranças Empáticas")
+    st.caption("Gestão de grupos e arrecadações")
+
+st.divider()
+
 # ------------------ BOTÃO DE VOLTAR ------------------
 if st.button("← Voltar ao Dashboard"):
-    st.switch_page("Dashboard.py")
+    st.switch_page("./pages/Dashboard.py")
 
 # ------------------ HEADER DO GRUPO ------------------
 st.title(f"📊 Equipe: {grupo['nomeGrupo']}")
