@@ -5,7 +5,7 @@ from streamlit_cookies_manager import EncryptedCookieManager
 from Variaveis.Variaveis import buscarURL, buscarChave
 
 # 1. Configuração da página (centralizada para ficar com cara de perfil)
-st.set_page_config(page_title="Meu Perfil", page_icon="👤", layout="centered")
+st.set_page_config(page_title="Meu Perfil", page_icon="👤")
 
 apiURL = buscarURL()
 cookies = EncryptedCookieManager(password=buscarChave())

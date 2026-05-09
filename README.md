@@ -12,11 +12,23 @@
 
 ## Descrição
 
-De um a dois parágrafos sobre o que é seu projeto e o que ele faz.
+<p align="center">
+<img src="https://raw.githubusercontent.com/2026-1-NCC5/Projeto13/refs/heads/main/imagens/logo.png" alt="Logo do Visão Empática" border="0">
+  Logo by <a href="https://github.com/2026-1-NCC5/Projeto13/tree/main">Enrolados</a> <a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>
+</p>
+
+O visão empática busca facilitar o desafio da contagem manual de alimentos do projeto lideranças empáticas. Com o auxílio de tecnologias de inteligência artificial e visão computacional, o nosso sistema é capaz de contar e identificar diferentes tipos de alimentos e sintetizar os dados coletados em uma dashboard interativa, possibilitando não somente o acompanhamento do progresso dos grupos, mas permitindo também o processo de auditoria pelos professores.
 <br><br>
-Meu projeto ajuda estudantes FECAP a configurarem seus githubs.
-<br><br>
-May the force be with you!
+O nosso modelo foi treinado utilizando o modelo Yolov8n, com um dataset de 1107 imagens. Na versão atual o modelo é capaz de identificar os seguintes alimentos:
+<ul>
+  <li>Arroz</li>
+  <li>Feijão carioca</li>
+  <li>Óleo de soja</li>
+  <li>Açúcar Refinado</li>
+  <li>Café</li>
+  <li>Fubá</li>
+  <li>Macarrão</li>
+</ul>
 <br><br>
 
 ## 🛠 Estrutura de pastas
@@ -24,69 +36,92 @@ May the force be with you!
 -Raiz<br>
 |<br>
 |-->documentos<br>
-  &emsp;|-->antigos<br>
-  &emsp;|Documentação.docx<br>
-|-->executáveis<br>
-  &emsp;|-->windows<br>
-  &emsp;|-->android<br>
-  &emsp;|-->HTML<br>
+  &emsp;|-->Entrega 1<br>
+  &emsp;|-->Entrega 2<br>
+  &emsp;|Banner_FECAP_CCOMP5_Enrolados.pdf<br>
+  &emsp;|Documento - Projeto de Extensão - COM Empresa - 2026_1.pdf<br>
 |-->imagens<br>
+  &emsp;|logo.png<br>
 |-->src<br>
   &emsp;|-->Backend<br>
   &emsp;|-->Frontend<br>
 |readme.md<br>
 
-A pasta raiz contem dois arquivos que devem ser alterados:
-
-<b>README.MD</b>: Arquivo que serve como guia e explicação geral sobre seu projeto. O mesmo que você está lendo agora.
-
-Há também 4 pastas que seguem da seguinte forma:
-
-<b>documentos</b>: Toda a documentação estará nesta pasta.
-
-<b>executáveis</b>: Binários e executáveis do projeto devem estar nesta pasta.
-
-<b>imagens</b>: Imagens do sistema
-
-<b>src</b>: Pasta que contém o código fonte.
-
-## 🛠 Instalação
-
-<b>Android:</b>
-
-Faça o Download do JOGO.apk no seu celular.
-Execute o APK e siga as instruções de seu telefone.
-
-```sh
-Coloque código do prompt de comnando se for necessário
-```
-
-<b>Windows:</b>
-
-Não há instalação! Apenas executável!
-Encontre o JOGO.exe na pasta executáveis e execute-o como qualquer outro programa.
-
-```sh
-Coloque código do prompt de comnando se for necessário
-```
-
-<b>HTML:</b>
-
-Não há instalação!
-Encontre o index.html na pasta executáveis e execute-o como uma página WEB (através de algum browser).
-
 ## 💻 Configuração para Desenvolvimento
 
-Descreva como instalar todas as dependências para desenvolvimento e como rodar um test-suite automatizado de algum tipo. Se necessário, faça isso para múltiplas plataformas.
+### Requisitos
 
 Para abrir este projeto você necessita das seguintes ferramentas:
 
--<a href="https://godotengine.org/download">GODOT</a>
+Para a dashboard:
+-<a href="https://www.python.org/downloads/">Python</a>
+Para o backend:
+-<a href="https://nodejs.org/pt-br/download">Node.js</a>
+Para o Banco de dados:
+-<a href="https://www.mysql.com/downloads/">MySQL</a> ou <a href="https://mariadb.org/download/">MariaDB</a>
+Para clonar o repositório:
+-<a href="https://git-scm.com/install/windows">Git</a>
 
+> [!Linux]
+> Você pode baixar as ferramentas necessárias diretamente do repositório da sua distribuição.
+
+## Inicializando o ambiente
+
+Clone o repositório com:
 ```sh
-make install
-npm test
-Coloque código do prompt de comnando se for necessário
+git clone https://github.com/2026-1-NCC5/Projeto13/
+```
+
+### Banco de dados
+
+Com o MySQL/MariaDB instalado, crie um usuário e utilize o arquivo db.sql na pasta /src/Entrega 2/Backend para criar o seu banco de dados.
+
+### Backend
+
+Entre na pasta src/Entrega 2/Backend e crie um arquivo ".env" e insira os seguintes valores:
+```sh
+DB_HOST="localhost"
+DB_NAME="LE"
+DB_USER="Nome do banco de dados criado"
+DB_PASSWORD="Senha do banco de dados criado"
+```
+
+Instale as seguintes dependências com o npm:
+```sh
+npm install express mysql2 body-parser cors multer dotenv fs
+```
+
+Inicialize o backend com:
+```sh
+node server.js
+```
+
+### Dashboard
+
+Com o Python instalado, entre na pasta src/Entrega 2/Frontend/DashboardLE e crie o ambiente virtual com:
+Linux:
+```sh
+python -m venv .venv
+source ./.venv/bin/activate
+```
+Windows:
+```sh
+python -m venv .venv
+source .\.venv\bin\activate
+```
+Crie um arquivo ".env" e insira os seguintes valores:
+```sh
+API_URL="Coloque o endereço do backend"
+SECRET_KEY="Crie uma chave"
+VIDEO_URL="Se você vai utilizar uma câmera via internet, coloque a url aqui"
+```
+Depois instale as seguintes dependências com o pip:
+```sh
+pip install streamlit streamlit_cookies_manager streamlit_shortcuts dotenv pandas ploty numpy opencv-python ultralytics
+```
+Inicialize a dashboard com:
+```sh
+streamlit run app.py
 ```
 
 ## 📋 Licença/License
@@ -96,9 +131,8 @@ Coloque código do prompt de comnando se for necessário
 
 Aqui estão as referências usadas no projeto.
 
-1. <https://github.com/iuricode/readme-template>
-2. <https://github.com/gabrieldejesus/readme-model>
-3. <https://chooser-beta.creativecommons.org/>
-4. <https://freesound.org/>
-5. <https://www.toptal.com/developers/gitignore>
-6. Músicas por: <a href="https://freesound.org/people/DaveJf/sounds/616544/"> DaveJf </a> e <a href="https://freesound.org/people/DRFX/sounds/338986/"> DRFX </a> ambas com Licença CC 0.
+1. Lideranças Empáticas. Disponível em: <https://liderancasempaticas.com/>. Acesso em: 9 Maio 2026
+2. ORGANIZAÇÃO DAS NAÇÕES UNIDAS (ONU). Transformando Nosso Mundo: A Agenda 2030 para o Desenvolvimento Sustentável. (Objetivo 2). Disponível em: <https://brasil.un.org/pt-br/sdgs>. Acesso em: 9 Maio 2026
+3. AI to support humanitarian response in emergencies. Disponível em: <https://wfpinnovation.medium.com/how-wfp-and-partners-are-using-ai-to-support-humanitarian-response-in-emergencies-60a329d688fb>. Acesso em: 9 maio. 2026.
+4. Automated Package Counting Using Vision AI. Disponível em:<https://imagevision.ai/blog/automated-package-counting-using-vision-ai-for-high-volume-facilities/> Acesso em: 9 maio. 2026.
+5. POLO, Luis. A Supply Chain Approach Highlighting the Use of Artificial Intelligence and Computer Vision to Improve the Efficiency of Food Supply Chains in the United States. International Journal for Multidisciplinary Field, v. 7, mar. 2025. Disponível em:<https://www.ijfmr.com/papers/2025/2/38464.pdf> Acesso em: 9 maio. 2026
