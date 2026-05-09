@@ -1,0 +1,2 @@
+Backend: https://github.com/2026-1-NCC5/Projeto13/tree/main/src/Entrega%202/Backend
+Frontend: https://github.com/2026-1-NCC5/Projeto13/tree/main/src/Entrega%202/Frontend/DashboardLE

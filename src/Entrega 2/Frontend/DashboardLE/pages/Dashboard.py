@@ -48,6 +48,8 @@ def buscar_integrantes(id_grupo):
     response.raise_for_status()
     return response.json()
 
+detalhes_grupo = st.Page("pages/1_Detalhes_do_Grupo.py", title="Detalhes do Grupo", icon=":material/details:")
+
 # ------------------ CARD ------------------
 def GrupoCard(grupo, integrantes):
     with st.container(border=True):
@@ -98,7 +100,7 @@ try:
         df_ranking.columns = ['Nome do Grupo', 'Mentor', 'Total Arrecadado (Kg)']
 
         # Exibe a tabela de ranking
-        st.dataframe(df_ranking, use_container_width=True)
+        st.dataframe(df_ranking, width='stretch')
     else:
         st.info("Nenhum grupo com arrecadação registrada ainda.")
 

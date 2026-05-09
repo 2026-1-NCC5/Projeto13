@@ -329,6 +329,7 @@ app.post("/editarAlimento", function(req, res) {
       console.error("Erro ao editar alimento", err);
       return res.status(500).json({ error: "Erro ao editar alimento" });
     }
+    console.log(peso)
     res.status(200).json({ message: "Alimento atualizado!" });
   });
 });

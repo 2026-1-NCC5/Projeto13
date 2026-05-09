@@ -85,7 +85,7 @@ with col_info:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # 5. Botão de saída estilizado
-    sairbtn = st.button("🚪 Sair da Conta", type="primary", use_container_width=True)
+    sairbtn = st.button("🚪 Sair da Conta", type="primary", width='stretch')
 
 # Lógica de Logout (Adicionado cookies.save() por segurança)
 if sairbtn:

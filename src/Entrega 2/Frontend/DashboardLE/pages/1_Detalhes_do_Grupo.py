@@ -38,7 +38,7 @@ if st.button("← Voltar ao Dashboard"):
 
 # ------------------ HEADER DO GRUPO ------------------
 st.title(f"📊 Equipe: {grupo['nomeGrupo']}")
-st.markdown(f"**Mentor:** {grupo['mentor']} | **Total Arrecadado Oficial:** {grupo['kgArrecadados']} kg")
+st.markdown(f"**Mentor:** {grupo['mentor']} | **Total Arrecadado Oficial:** {grupo['kgArrecadados']:.2f} kg")
 
 with st.expander("Ver Integrantes da Equipe"):
     for integrante in integrantes:
@@ -99,7 +99,7 @@ else:
         fig_linha = px.line(df_timeline, x='Data', y='peso', markers=True,
                             labels={'peso': 'Quilos (kg)', 'Data': 'Data da Doação'},
                             color_discrete_sequence=['#1f77b4'])
-        st.plotly_chart(fig_linha, use_container_width=True)
+        st.plotly_chart(fig_linha, width='stretch')
 
     with col_grafico2:
         # Gráfico de Barras: Top Alimentos Arrecadados por Peso
@@ -109,7 +109,7 @@ else:
                             labels={'peso': 'Quilos (kg)', 'nome': 'Alimento'},
                             color='peso', color_continuous_scale='Blues')
         fig_barras.update_layout(yaxis={'categoryorder': 'total ascending'})
-        st.plotly_chart(fig_barras, use_container_width=True)
+        st.plotly_chart(fig_barras, width='stretch')
 
     st.divider()
 
@@ -132,6 +132,6 @@ else:
 
     st.dataframe(
         df_exibicao,
-        use_container_width=True,
+        width='stretch',
         hide_index=True
     )

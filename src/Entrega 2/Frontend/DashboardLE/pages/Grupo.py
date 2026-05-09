@@ -187,15 +187,42 @@ else:
             fig.update_traces(textposition='inside', textinfo='percent+label')
             fig.update_layout(margin=dict(t=20, b=20, l=20, r=20), showlegend=False)
             st.plotly_chart(fig, use_container_width=True)
-        # 7. Tabela Editável
+        # 7. Tabela Editável (Usando Callbacks)
         st.markdown("---")
         st.subheader("📋 Histórico de Arrecadação (Editável)")
-        st.caption(
-            "Você pode modificar os valores com um duplo-clique ou excluir uma linha inteira (selecione-a e aperte delete/backspace). Ao finalizar, clique em Salvar.")
-        # Resetar o index é fundamental para garantir que as alterações não apontem para a linha errada após ordenar
+        st.caption("Qualquer alteração ou exclusão feita na tabela será salva automaticamente.")
+        # Guardamos o DF ordenado no session_state para o callback acessar as IDs corretamente
         df = df.sort_values(by="dataHora", ascending=False).reset_index(drop=True)
+        st.session_state["df_atual"] = df
         editor_key = "tabela_alimentos"
-        # O st.data_editor substitui o st.dataframe
+
+
+            # Função de Callback: Roda assim que o usuário clica fora da célula editada ou deleta uma linha
+        def processar_tabela():
+            mudancas = st.session_state[editor_key]
+            houve_alteracao = False
+            df_ref = st.session_state["df_atual"]
+            # 1. Processar Exclusões
+            for idx in mudancas.get("deleted_rows", []):
+                id_alimento = df_ref.iloc[idx]["id"]
+                requests.post(apiURL + "/excluirAlimento", json={"id": int(id_alimento)})
+                houve_alteracao = True
+            # 2. Processar Edições
+            for idx, modificacoes in mudancas.get("edited_rows", {}).items():
+                linha_original = df_ref.iloc[idx]
+                dados_update = {
+                    "id": int(linha_original["id"]),
+                    "nome": modificacoes.get("nome", linha_original["nome"]),
+                    "marca": modificacoes.get("marca", linha_original["marca"]),
+                    "quantidade": int(modificacoes.get("quantidade", linha_original["quantidade"])),
+                    "peso": float(modificacoes.get("peso", linha_original["peso"]))
+                }
+                requests.post(apiURL + "/editarAlimento", json=dados_update)
+                houve_alteracao = True
+            if houve_alteracao:
+                # Opcional: Mostrar um toast de sucesso (desaparece rápido e não quebra o layout)
+                st.toast("✅ Alterações salvas com sucesso no banco de dados!")
+        # O st.data_editor aciona a função 'processar_tabela' instantaneamente
         st.data_editor(
             df,
             use_container_width=True,
@@ -203,44 +230,10 @@ else:
             num_rows="dynamic",
             disabled=["id", "dataHora", "idGrupo", "framecaminho"],
             key=editor_key,
+            on_change=processar_tabela,  # <--- O segredo está aqui
             column_config={
-                "framecaminho": st.column_config.ImageColumn(
-                    "Imagem",
-                    help="Imagem capturada no momento da detecção"
-                )
+                "framecaminho": st.column_config.ImageColumn("Imagem")
             }
         )
-        # Botão para processar as modificações
-        if st.button("💾 Salvar Alterações da Tabela", type="primary"):
-            mudancas = st.session_state[editor_key]
-            houve_alteracao = False
-            # 1. Processar linhas excluídas
-            for idx in mudancas.get("deleted_rows", []):
-                id_alimento = df.iloc[idx]["id"]
-                resposta = requests.post(apiURL + "/excluirAlimento", json={"id": int(id_alimento)})
-                houve_alteracao = True
-            # 2. Processar linhas editadas
-            for idx, modificacoes_coluna in mudancas.get("edited_rows", {}).items():
-                linha_original = df.iloc[idx]
-                id_alimento = linha_original["id"]
-                # Recupera o valor modificado ou mantém o original se não foi alterado
-                novo_nome = modificacoes_coluna.get("nome", linha_original["nome"])
-                nova_marca = modificacoes_coluna.get("marca", linha_original["marca"])
-                nova_qtd = modificacoes_coluna.get("quantidade", linha_original["quantidade"])
-                novo_peso = modificacoes_coluna.get("peso", linha_original["peso"])
-                dados_update = {
-                    "id": int(id_alimento),
-                    "nome": novo_nome,
-                    "marca": nova_marca,
-                    "quantidade": int(nova_qtd),
-                    "peso": float(novo_peso)
-                }
-                resposta = requests.post(apiURL + "/editarAlimento", json=dados_update)
-                houve_alteracao = True
-            if houve_alteracao:
-                st.success("Tabela e totais do grupo atualizados com sucesso!")
-                st.rerun()  # Atualiza a página para refletir os novos dados nos gráficos e métricas
-            else:
-                st.warning("Nenhuma alteração foi detectada para salvar.")
     else:
         st.warning("O grupo ainda não realizou uma captura!")

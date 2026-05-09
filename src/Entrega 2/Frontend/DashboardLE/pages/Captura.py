@@ -113,6 +113,11 @@ capturar = shortcut_button(
     shortcut="Ctrl+C"
 )
 
+# 6. Layout para o vídeo ao vivo
+col1, col2 = st.columns(2)
+frame_placeholder = col1.empty()
+table_placeholder = col2.empty()
+
 # 4. Lógica do Botão: Atualiza os dados salvos associando o frame ao clique
 if capturar:
     if st.session_state.ultimo_frame is not None:
@@ -134,11 +139,8 @@ if capturar:
     else:
         st.session_state.itens_salvos.extend(st.session_state.contagem_atual)
 
-# Botão para limpar tabela
-if st.session_state.itens_salvos:
-    if st.button("Limpar Tabela"):
-        st.session_state.itens_salvos = []
-        st.rerun()
+
+st.divider()
 
 # 5. Renderiza os Itens Salvos com a Coluna de Imagem
 st.subheader("Itens Capturados (Salvos)")
@@ -154,20 +156,21 @@ if st.session_state.itens_salvos:
         hide_index=True
     )
     if not run:
-        enviarDados = st.button("Enviar")
-        if enviarDados:
-            enviar(dados)
+        coltab1, coltab2 = st.columns(2)
+        with coltab1:
+            enviarDados = st.button("Enviar")
+            if enviarDados:
+                enviar(dados)
+        with coltab2:
+            # Botão para limpar tabela
+            if st.session_state.itens_salvos:
+                if st.button("Limpar Tabela"):
+                    st.session_state.itens_salvos = []
+                    st.rerun()
     else:
         st.warning("Para enviar os dados desligue a câmera")
 else:
     st.info("Clique em 'Capturar Itens' enquanto a câmera estiver ligada para registrar os itens.")
-
-st.divider()
-
-# 6. Layout para o vídeo ao vivo
-col1, col2 = st.columns(2)
-frame_placeholder = col1.empty()
-table_placeholder = col2.empty()
 
 # 7. Loop de Vídeo Protegido
 if run:
@@ -297,12 +300,23 @@ if run:
                     (base_dir_cm[0] - base_esq_cm[0]) ** 2 +
                     (base_dir_cm[1] - base_esq_cm[1]) ** 2
                 )
+                pesoAtual = 0
+                if nome_item == "Pacote de Arroz" and largura_cm > 30:
+                    pesoAtual = 5
+                elif nome_item == "Pacote de Arroz" and largura_cm <=15:
+                    pesoAtual = 1
+                elif nome_item == "Pacote de Arroz":
+                    pesoAtual = 2
+                elif nome_item == "Oleo de Soja" or nome_item == "Fuba" or nome_item == "Cafe" or nome_item == "Macarrao" or nome_item == "Macarrao Espaguete":
+                    pesoAtual = 0.5
+                elif nome_item == "Acucar" or nome_item == "Feijao Carioca":
+                    pesoAtual = 1
 
                 tabela.append({
                     "Item": nome_item,
                     "Quantidade": 1,
                     "Marca": "",
-                    "Peso": f"{largura_cm:.1f}",
+                    "Peso": f"{pesoAtual:.1f}",
                     "Data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 })
         st.session_state.contagem_atual = tabela
