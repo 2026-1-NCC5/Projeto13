@@ -183,7 +183,7 @@ if run:
             st.error("Erro ao acessar a câmera!")
             break
 
-        resultados = list(modelo(frame, stream=True))
+        resultados = list(modelo(frame, stream=True, conf=0.5))
         itens_frame = []
 
         frame_anotado = frame.copy()
