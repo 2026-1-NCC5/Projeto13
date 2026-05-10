@@ -167,7 +167,7 @@ else:
         col_grafico1, col_grafico2 = st.columns(2)
 
         with col_grafico1:
-            st.markdown("##### 📈 Evolução Diária")
+            st.markdown("##### 📈 Evolução das arrecadações")
             df_linha = df.copy()
             df_linha["data"] = df_linha["dataHora"].dt.date
             df_linha = df_linha.groupby("data")["peso"].sum().reset_index()
@@ -187,17 +187,38 @@ else:
             fig.update_traces(textposition='inside', textinfo='percent+label')
             fig.update_layout(margin=dict(t=20, b=20, l=20, r=20), showlegend=False)
             st.plotly_chart(fig, use_container_width=True)
-        # 7. Tabela Editável (Usando Callbacks)
+        # 7. Tabela Editável (Usando Callbacks) e Filtros
         st.markdown("---")
         st.subheader("📋 Histórico de Arrecadação (Editável)")
         st.caption("Qualquer alteração ou exclusão feita na tabela será salva automaticamente.")
-        # Guardamos o DF ordenado no session_state para o callback acessar as IDs corretamente
+        # Guardamos o DF ordenado base
         df = df.sort_values(by="dataHora", ascending=False).reset_index(drop=True)
-        st.session_state["df_atual"] = df
+        # --- SISTEMA DE FILTRO ---
+        col_filtro1, col_filtro2 = st.columns(2)
+        with col_filtro1:
+            coluna_filtro = st.selectbox(
+                "Filtrar por categoria:",
+                ["Sem filtro", "nome", "marca", "nomeIntegrante"],
+                format_func=lambda x: x.capitalize() if x != "Sem filtro" else x,
+                key="filtro_categoria_grupo"
+            )
+        df_filtrado = df.copy()
+        if coluna_filtro != "Sem filtro":
+            with col_filtro2:
+                # Pega os valores únicos da coluna selecionada
+                valores_unicos = df_filtrado[coluna_filtro].dropna().unique().tolist()
+                valor_selecionado = st.selectbox(
+                    f"Selecione o item:",
+                    ["Todos"] + valores_unicos,
+                    key="filtro_valor_grupo"
+                )
+            if valor_selecionado != "Todos":
+                df_filtrado = df_filtrado[df_filtrado[coluna_filtro] == valor_selecionado]
+        # RESETAMOS O ÍNDICE DO DF FILTRADO PARA NÃO QUEBRAR A EDIÇÃO!
+        df_filtrado = df_filtrado.reset_index(drop=True)
+        st.session_state["df_atual"] = df_filtrado
         editor_key = "tabela_alimentos"
-
-
-            # Função de Callback: Roda assim que o usuário clica fora da célula editada ou deleta uma linha
+        # Função de Callback: Roda assim que o usuário clica fora da célula editada ou deleta uma linha
         def processar_tabela():
             mudancas = st.session_state[editor_key]
             houve_alteracao = False
@@ -220,17 +241,16 @@ else:
                 requests.post(apiURL + "/editarAlimento", json=dados_update)
                 houve_alteracao = True
             if houve_alteracao:
-                # Opcional: Mostrar um toast de sucesso (desaparece rápido e não quebra o layout)
                 st.toast("✅ Alterações salvas com sucesso no banco de dados!")
-        # O st.data_editor aciona a função 'processar_tabela' instantaneamente
+        # O st.data_editor aciona a função 'processar_tabela'
         st.data_editor(
-            df,
+            df_filtrado,  # <-- Passamos o DF Filtrado aqui
             use_container_width=True,
             hide_index=True,
             num_rows="dynamic",
             disabled=["id", "dataHora", "idGrupo", "framecaminho"],
             key=editor_key,
-            on_change=processar_tabela,  # <--- O segredo está aqui
+            on_change=processar_tabela,
             column_config={
                 "framecaminho": st.column_config.ImageColumn("Imagem")
             }

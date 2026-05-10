@@ -303,7 +303,7 @@ if run:
                 pesoAtual = 0
                 if nome_item == "Pacote de Arroz" and largura_cm > 30:
                     pesoAtual = 5
-                elif nome_item == "Pacote de Arroz" and largura_cm <=15:
+                elif nome_item == "Pacote de Arroz" and largura_cm <= 15:
                     pesoAtual = 1
                 elif nome_item == "Pacote de Arroz":
                     pesoAtual = 2

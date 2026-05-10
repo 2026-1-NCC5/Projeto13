@@ -113,7 +113,7 @@ else:
 
     st.divider()
 
-    # 3. TABELA DE HISTÓRICO COMPLETO
+    # 3. TABELA DE HISTÓRICO COMPLETO COM FILTROS
     st.subheader("📋 Histórico Completo de Entradas")
 
     # Organizando as colunas para exibição
@@ -130,8 +130,34 @@ else:
     df_exibicao['Data e Hora'] = df_exibicao['Data e Hora'].dt.strftime('%d/%m/%Y %H:%M:%S')
     df_exibicao.sort_values('ID', ascending=False, inplace=True)
 
+    # --- SISTEMA DE FILTRO ---
+    col_filtro1, col_filtro2 = st.columns(2)
+
+    with col_filtro1:
+        coluna_filtro_det = st.selectbox(
+            "Filtrar por categoria:",
+            ["Sem filtro", "Alimento", "Marca"],
+            key="filtro_categoria_detalhes"
+        )
+
+    df_exibicao_filtrado = df_exibicao.copy()
+
+    if coluna_filtro_det != "Sem filtro":
+        with col_filtro2:
+            valores_unicos_det = df_exibicao_filtrado[coluna_filtro_det].dropna().unique().tolist()
+            valor_selecionado_det = st.selectbox(
+                f"Selecione o item:",
+                ["Todos"] + valores_unicos_det,
+                key="filtro_valor_detalhes"
+            )
+
+        if valor_selecionado_det != "Todos":
+            df_exibicao_filtrado = df_exibicao_filtrado[
+                df_exibicao_filtrado[coluna_filtro_det] == valor_selecionado_det]
+
+    # Renderiza a tabela filtrada
     st.dataframe(
-        df_exibicao,
+        df_exibicao_filtrado,
         width='stretch',
         hide_index=True
     )
