@@ -110,7 +110,7 @@ st.title("Captura com Detecção")
 run = st.checkbox("Ligar câmera")
 capturar = shortcut_button(
     "Capturar Itens",
-    shortcut="Ctrl+C"
+    shortcut="Enter"
 )
 
 # 6. Layout para o vídeo ao vivo

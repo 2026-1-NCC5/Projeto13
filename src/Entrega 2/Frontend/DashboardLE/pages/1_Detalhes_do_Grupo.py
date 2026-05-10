@@ -51,7 +51,6 @@ st.divider()
 @st.cache_data(ttl=60)  # Cache de 1 minuto para não sobrecarregar o banco
 def buscar_historico_alimentos(id_grupo):
     try:
-        # Pelo seu server.js, a rota espera req.body.idgrupo
         response = requests.post(f"{apiURL}/buscarAlimentosGrupo", json={"idgrupo": id_grupo})
         response.raise_for_status()
         return response.json()

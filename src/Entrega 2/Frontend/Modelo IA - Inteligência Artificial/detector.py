@@ -2,11 +2,11 @@ import cv2
 from ultralytics import YOLO
 from collections import Counter
 
-#Alvos: Arroz, Feijão Carioca e Óleo de Soja
+#Alvos: Arroz, Feijão Carioca, Óleo de Soja, Açúcar, Macarrão, Macarrão Espaguete e Café
 
 modelo=YOLO('best.pt')
 
-camera = cv2.VideoCapture("http://192.168.1.101:4747/video")
+camera = cv2.VideoCapture("")
 
 print("Iniciando a câmera... Pressione q para sair.")
 

@@ -98,7 +98,7 @@ node server.js
 
 ### Dashboard
 
-Com o Python instalado, entre na pasta src/Entrega 2/Frontend/DashboardLE e crie o ambiente virtual com:
+Com o Python instalado, entre na pasta src/Entrega 2/Frontend/DashboardLE e crie o ambiente virtual com:<br>
 Linux:
 ```sh
 python -m venv .venv
@@ -107,7 +107,7 @@ source ./.venv/bin/activate
 Windows:
 ```sh
 python -m venv .venv
-source .\.venv\bin\activate
+.\.venv\bin\activate.ps1
 ```
 Crie um arquivo ".env" e insira os seguintes valores:
 ```sh
@@ -117,7 +117,7 @@ VIDEO_URL="Se você vai utilizar uma câmera via internet, coloque a url aqui"
 ```
 Depois instale as seguintes dependências com o pip:
 ```sh
-pip install streamlit streamlit_cookies_manager streamlit_shortcuts dotenv pandas ploty numpy opencv-python ultralytics
+pip install streamlit streamlit_cookies_manager streamlit_shortcuts dotenv pandas ploty[express] numpy opencv-python ultralytics
 ```
 Inicialize a dashboard com:
 ```sh

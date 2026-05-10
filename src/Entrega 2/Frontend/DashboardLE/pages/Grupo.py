@@ -34,7 +34,7 @@ if not cookies.get("nome"):
 def get_available_options(nomes, selecionados):
     return ["Selecionar..."] + [n for n in nomes if n not in selecionados]
 
-# 2. Card modernizado (compatível com dark/light mode e com transição suave)
+# 2. Card
 def card(title, text):
     st.markdown(f"""
     <div style="
@@ -81,14 +81,32 @@ if grupo == "Nenhum":
         nomeGrupo = st.text_input("Nome do Grupo", placeholder="Ex: Os Arrecadadores", value="")
 
         # Usando colunas para organizar os inputs
+        # Usando colunas para organizar os inputs
         col1, col2 = st.columns(2)
         with col1:
             mentor = st.selectbox("Mentor", ["Selecionar...", "João", "Maria", "Jêsus"])
             integ1 = st.selectbox("Integrante 1 (Você)", [nome])
-            integ2 = st.selectbox("Integrante 2", ["Selecionar..."] + nomes)
+
+            # Filtra o próprio usuário logado das opções
+            opcoes_2 = get_available_options(nomes, [nome])
+            integ2 = st.selectbox("Integrante 2", opcoes_2)
+
         with col2:
-            integ3 = st.selectbox("Integrante 3", ["Selecionar..."] + nomes)
-            integ4 = st.selectbox("Integrante 4", ["Selecionar..."] + nomes)
+            # Adiciona o integ2 à lista de bloqueados (se ele tiver selecionado alguém)
+            selecionados_2 = [nome]
+            if integ2 != "Selecionar...":
+                selecionados_2.append(integ2)
+
+            opcoes_3 = get_available_options(nomes, selecionados_2)
+            integ3 = st.selectbox("Integrante 3", opcoes_3)
+
+            # Adiciona o integ3 à lista de bloqueados (se ele tiver selecionado alguém)
+            selecionados_3 = selecionados_2.copy()
+            if integ3 != "Selecionar...":
+                selecionados_3.append(integ3)
+
+            opcoes_4 = get_available_options(nomes, selecionados_3)
+            integ4 = st.selectbox("Integrante 4", opcoes_4)
 
         st.markdown("<br>", unsafe_allow_html=True)
 
