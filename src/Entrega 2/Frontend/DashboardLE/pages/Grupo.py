@@ -81,10 +81,9 @@ if grupo == "Nenhum":
         nomeGrupo = st.text_input("Nome do Grupo", placeholder="Ex: Os Arrecadadores", value="")
 
         # Usando colunas para organizar os inputs
-        # Usando colunas para organizar os inputs
         col1, col2 = st.columns(2)
         with col1:
-            mentor = st.selectbox("Mentor", ["Selecionar...", "João", "Maria", "Jêsus"])
+            mentor = st.selectbox("Mentor", ["Selecionar...", "Jêsus", "Neilson", "Juliana", "Carolina", "Luciana", "Simone", "Edosa", "Roberto", "Rosana", "Osiris", "Waldir", "Gilmar", "Eduardo"])
             integ1 = st.selectbox("Integrante 1 (Você)", [nome])
 
             # Filtra o próprio usuário logado das opções
