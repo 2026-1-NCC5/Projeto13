@@ -54,13 +54,13 @@ O nosso modelo foi treinado utilizando o modelo Yolov8n, com um dataset de 1107 
 Para abrir este projeto você necessita das seguintes ferramentas:
 
 Para a dashboard:<br>
--<a href="https://www.python.org/downloads/">Python</a>:<br>
+-<a href="https://www.python.org/downloads/">Python</a><br>
 Para o backend:<br>
--<a href="https://nodejs.org/pt-br/download">Node.js</a>:<br>
+-<a href="https://nodejs.org/pt-br/download">Node.js</a><br>
 Para o Banco de dados:<br>
--<a href="https://www.mysql.com/downloads/">MySQL</a> ou <a href="https://mariadb.org/download/">MariaDB</a>:<br>
+-<a href="https://www.mysql.com/downloads/">MySQL</a> ou <a href="https://mariadb.org/download/">MariaDB</a><br>
 Para clonar o repositório:<br>
--<a href="https://git-scm.com/install/windows">Git</a>:<br>
+-<a href="https://git-scm.com/install/windows">Git</a><br>
 
 > [!Linux]
 > Você pode baixar as ferramentas necessárias diretamente do repositório da sua distribuição.
