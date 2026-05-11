@@ -69,6 +69,12 @@ else:
     # Converte JSON para Pandas DataFrame para facilitar a análise
     df = pd.DataFrame(dados_alimentos)
 
+    # Tratamento da imagem da captura
+    if "framecaminho" in df.columns:
+        df["framecaminho"] = df["framecaminho"].apply(
+            lambda x: f"{apiURL}/uploads/{x}" if pd.notnull(x) and x != "" else None
+        )
+
     # Tratamento de datas
     df['dataHora'] = pd.to_datetime(df['dataHora'])
     df['Data'] = df['dataHora'].dt.strftime('%d/%m/%Y')
@@ -115,14 +121,20 @@ else:
 
     # 3. TABELA DE HISTÓRICO COMPLETO COM FILTROS
     # Organizando as colunas para exibição
-    df_exibicao = df[['id', 'nome', 'marca', 'quantidade', 'peso', 'dataHora']].copy()
+    colunas_exibicao = ['id', 'nome', 'marca', 'quantidade', 'peso', 'dataHora']
+    if 'framecaminho' in df.columns:
+        colunas_exibicao.append('framecaminho')
+
+    df_exibicao = df[colunas_exibicao].copy()
+
     df_exibicao.rename(columns={
         'id': 'ID',
         'nome': 'Alimento',
         'marca': 'Marca',
         'quantidade': 'Qtd',
         'peso': 'Peso (kg)',
-        'dataHora': 'Data e Hora'
+        'dataHora': 'Data e Hora',
+        'framecaminho': 'Imagem'
     }, inplace=True)
 
     df_exibicao['Data e Hora'] = df_exibicao['Data e Hora'].dt.strftime('%d/%m/%Y %H:%M:%S')
@@ -181,6 +193,9 @@ else:
     # Renderiza a tabela filtrada
     st.dataframe(
         df_exibicao_filtrado,
-        width='stretch',
-        hide_index=True
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "Imagem": st.column_config.ImageColumn("Captura")
+        }
     )

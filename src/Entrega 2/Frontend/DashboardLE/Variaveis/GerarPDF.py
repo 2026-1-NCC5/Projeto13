@@ -68,6 +68,15 @@ def gerar_pdf_relatorio_estilizado(nome_grupo, mentor, integrantes, total_kg, df
 
         y_atual = pdf.get_y()
         for i, fig in enumerate(figs):
+            # --- CORREÇÃO DE COR AQUI ---
+            # Força o fundo branco, texto preto e remove temas escuros antes da exportação
+            fig.update_layout(
+                paper_bgcolor="white",
+                plot_bgcolor="white",
+                template="plotly_white",
+                font=dict(color="black")
+            )
+            # -----------------------------
             # Converte Plotly para imagem PNG em memória
             img_bytes = pio.to_image(fig, format="png", width=600, height=350)
             img_io = io.BytesIO(img_bytes)
