@@ -312,12 +312,14 @@ if run:
                 elif nome_item == "Acucar" or nome_item == "Feijao Carioca":
                     pesoAtual = 1
 
+                confianca = float(box.conf[0])
                 tabela.append({
                     "Item": nome_item,
                     "Quantidade": 1,
                     "Marca": "",
                     "Peso": f"{pesoAtual:.1f}",
-                    "Data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    "Data": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "Confianca": confianca
                 })
         st.session_state.contagem_atual = tabela
 

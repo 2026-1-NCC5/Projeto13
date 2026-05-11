@@ -19,6 +19,7 @@ dataHora datetime,
 framecaminho varchar(50),
 idGrupo int,
 nomeIntegrante varchar(30),
+confianca float,
 foreign key (idGrupo) references grupo(id)
 );
 

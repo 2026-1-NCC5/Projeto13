@@ -4,7 +4,10 @@ import pandas as pd
 import plotly.express as px
 from streamlit_cookies_manager import EncryptedCookieManager
 
+from Variaveis.GerarPDF import gerar_pdf_relatorio_estilizado
 from Variaveis.Variaveis import buscarURL, buscarChave
+
+
 
 # 1. Configuração da página (deve ser a primeira instrução Streamlit)
 st.set_page_config(page_title="Dashboard de Arrecadação", page_icon="📊", layout="wide")
@@ -14,6 +17,8 @@ apiURL = buscarURL()
 
 if not cookies.ready():
     st.stop()
+
+
 
 # ------------------ HEADER ------------------
 col1, col2 = st.columns([1, 4])
@@ -206,8 +211,33 @@ else:
             st.plotly_chart(fig, use_container_width=True)
         # 7. Tabela Editável (Usando Callbacks) e Filtros
         st.markdown("---")
-        st.subheader("📋 Histórico de Arrecadação (Editável)")
-        st.caption("Qualquer alteração ou exclusão feita na tabela será salva automaticamente.")
+        col_tit, col_btn = st.columns([3, 1])
+        with col_tit:
+            st.subheader("📋 Histórico de Arrecadação")
+            st.caption("Qualquer alteração ou exclusão feita na tabela será salva automaticamente.")
+
+        with col_btn:
+            # Pega só os integrantes preenchidos
+            lista_integrantes = [i for i in [nome, integrante2, integrante3, integrante4] if i and i != "Selecionar..."]
+
+            # Chama a função geradora de PDF usando os dados filtrados ou originais
+            # Usaremos o df base aqui. Mas se quiser exportar só o filtro, mude 'df' abaixo para 'df_filtrado' na linha do botão
+            pdf_bytes = gerar_pdf_relatorio_estilizado(
+                respostaGrupo['nomeGrupo'],
+                mentor,
+                lista_integrantes,
+                kgArrecadado,
+                df,
+                figs=[fig]  # Passe a variável 'fig' que você criou para o gráfico de rosca
+            )
+            st.download_button(
+                label="📄 Exportar Relatório PDF",
+                data=pdf_bytes,
+                file_name=f"Arrecadacao_{respostaGrupo['nomeGrupo']}.pdf",
+                mime="application/pdf",
+                use_container_width=True,
+                type="primary"
+            )
         # Guardamos o DF ordenado base
         df = df.sort_values(by="dataHora", ascending=False).reset_index(drop=True)
         # --- SISTEMA DE FILTRO ---
@@ -265,7 +295,7 @@ else:
             use_container_width=True,
             hide_index=True,
             num_rows="dynamic",
-            disabled=["id", "dataHora", "idGrupo", "framecaminho"],
+            disabled=["id", "dataHora", "idGrupo", "framecaminho", "confianca", "nomeIntegrante"],
             key=editor_key,
             on_change=processar_tabela,
             column_config={

@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import plotly.express as px
 
+from Variaveis.GerarPDF import gerar_pdf_relatorio_estilizado
 from Variaveis.Variaveis import buscarURL
 
 # ------------------ CONFIG ------------------
@@ -113,8 +114,6 @@ else:
     st.divider()
 
     # 3. TABELA DE HISTÓRICO COMPLETO COM FILTROS
-    st.subheader("📋 Histórico Completo de Entradas")
-
     # Organizando as colunas para exibição
     df_exibicao = df[['id', 'nome', 'marca', 'quantidade', 'peso', 'dataHora']].copy()
     df_exibicao.rename(columns={
@@ -128,6 +127,33 @@ else:
 
     df_exibicao['Data e Hora'] = df_exibicao['Data e Hora'].dt.strftime('%d/%m/%Y %H:%M:%S')
     df_exibicao.sort_values('ID', ascending=False, inplace=True)
+
+    col_tit2, col_btn2 = st.columns([3, 1])
+    with col_tit2:
+        st.subheader("📋 Histórico Completo de Entradas")
+
+    with col_btn2:
+        lista_integrantes_det = [i['nome'] for i in integrantes]
+        # Gera o PDF já passando o df_exibicao (que tem os nomes de coluna adaptados)
+        # Dentro do with col_btn2:
+        pdf_bytes_det = gerar_pdf_relatorio_estilizado(
+            grupo['nomeGrupo'],
+            grupo['mentor'],
+            lista_integrantes_det,
+            grupo['kgArrecadados'],
+            df_exibicao,
+            figs=[fig_linha, fig_barras]  # Passando os dois gráficos da tela
+        )
+        st.download_button(
+            label="📄 Exportar Relatório PDF",
+            data=pdf_bytes_det,
+            file_name=f"Detalhes_Arrecadacao_{grupo['nomeGrupo']}.pdf",
+            mime="application/pdf",
+            use_container_width=True,
+            type="primary"
+        )
+
+
 
     # --- SISTEMA DE FILTRO ---
     col_filtro1, col_filtro2 = st.columns(2)

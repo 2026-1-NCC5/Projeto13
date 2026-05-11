@@ -117,7 +117,7 @@ VIDEO_URL="Se você vai utilizar uma câmera via internet, coloque a url aqui"
 ```
 Depois instale as seguintes dependências com o pip:
 ```sh
-pip install streamlit streamlit_cookies_manager streamlit_shortcuts dotenv pandas ploty[express] numpy opencv-python ultralytics
+pip install streamlit streamlit_cookies_manager streamlit_shortcuts dotenv pandas ploty[express] numpy opencv-python ultralytics fpdf2 kaleido
 ```
 Inicialize a dashboard com:
 ```sh

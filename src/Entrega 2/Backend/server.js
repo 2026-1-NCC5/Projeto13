@@ -168,11 +168,12 @@ app.post("/captura", function(req, res) {
       item.Data,
       frameCaminho, // Insere o nome do arquivo na tabela (ou null)
       idGrupo,
-      nome
+      nome,
+      item.Confianca
     ];
   });
 
-  const query = 'INSERT INTO alimento (nome, marca, quantidade, peso, dataHora, framecaminho, idGrupo, nomeIntegrante) VALUES ?';
+  const query = 'INSERT INTO alimento (nome, marca, quantidade, peso, dataHora, framecaminho, idGrupo, nomeIntegrante, confianca) VALUES ?';
 
   db.query(query, [valores], (err, result) => {
     if (err) {
