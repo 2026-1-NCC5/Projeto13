@@ -153,8 +153,6 @@ else:
             type="primary"
         )
 
-
-
     # --- SISTEMA DE FILTRO ---
     col_filtro1, col_filtro2 = st.columns(2)
 
